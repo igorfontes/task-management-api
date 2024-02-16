@@ -7,6 +7,8 @@ import com.perinity.manager.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TaskService {
     @Autowired
@@ -41,6 +43,13 @@ public class TaskService {
             task.setDone(true);
             taskRepository.save(task);
         });
+    }
+
+    public List<Task> obtainPendingTasks() {
+        return taskRepository.findByOrderByDeadlineAsc()
+                    .stream()
+                    .filter(it -> it.getPerson() == null)
+                    .toList().subList(0, 3);
     }
 
 }
