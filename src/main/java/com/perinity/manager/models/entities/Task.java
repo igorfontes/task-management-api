@@ -26,8 +26,9 @@ public class Task {
     @Column(name = "Prazo")
     private Date deadline;
 
-    @Column(name = "idDepartamento")
-    private Long idDepartment;
+    @ManyToOne
+    @JoinColumn(name = "idDepartamento")
+    private Department department;
 
     @Column(name = "Duracao")
     private Long duration;
