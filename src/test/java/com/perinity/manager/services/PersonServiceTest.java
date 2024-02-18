@@ -1,13 +1,5 @@
 package com.perinity.manager.services;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import java.util.Arrays;
-import java.sql.Date;
-import java.util.List;
-import java.util.Optional;
-
 import com.perinity.manager.models.DTOs.ManagementInfoDTO;
 import com.perinity.manager.models.entities.Department;
 import com.perinity.manager.models.entities.Person;
@@ -18,6 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.sql.Date;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class PersonServiceTests {
@@ -120,7 +121,7 @@ class PersonServiceTests {
     }
 
     @Test
-    void filterPeopleByNameAndDates_whenThereIsNoTaskBetweenTheDates_mustReturnEmpty() {
+    void filterPeopleByNameAndDates_whenThereIsNoTaskBetweenTheDates_mustReturnAverageSpentHoursPerTask() {
         var startDate = new Date(124,5,4);
         var endDate = new Date(124,5,10);
         var person = createTestPerson1();
@@ -136,10 +137,10 @@ class PersonServiceTests {
     }
 
     @Test
-    void testFilterPeopleByNameAndDatesNoPersonFound() {
+    void filterPeopleByNameAndDates_whenNoPersonIsFound_mustReturnZeroAverageSpentHoursPerTask() {
         var startDate = new Date(124,5,4);
         var endDate = new Date(124,5,10);
-        String personName = "Nonexistent Person";
+        var personName = "Nonexistent Person";
         when(personRepository.findByName(personName)).thenReturn(Optional.empty());
 
         Long result = personService.filterPeopleByNameAndDates(personName, startDate, endDate);
