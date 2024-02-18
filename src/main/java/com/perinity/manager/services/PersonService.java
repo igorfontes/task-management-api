@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PersonService {
@@ -52,10 +51,10 @@ public class PersonService {
         Date startDate,
         Date endDate
     ) {
-        Optional<Person> personOptional = personRepository.findByName(name);
+        var possiblePerson = personRepository.findByName(name);
 
-        if (personOptional.isPresent()) {
-            var durations = taskRepository.findByPersonAndDeadlineBetween(personOptional.get(), startDate, endDate)
+        if (possiblePerson.isPresent()) {
+            var durations = taskRepository.findByPersonAndDeadlineBetween(possiblePerson.get(), startDate, endDate)
                     .stream()
                     .map(Task::getDuration)
                     .toList();
